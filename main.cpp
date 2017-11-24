@@ -5,17 +5,9 @@
 QString formatThousandsSeparators(const QString &str)
 {
     QString result = str;
-    int startPos = result.indexOf(QRegularExpression("[0-9]"));
-    if (startPos >= 0) {
-        int endPos = result.indexOf(QRegularExpression("[.]"));
 
-        if (endPos < 0) {
-            endPos = result.length();
-        }
-
-        for (int i = endPos - 3; i >= startPos + 1; i -= 3) {
-            result.insert(i, ",");
-        }
+    for (int i = result.count() - 3; i >= 1; i -= 3) {
+        result.insert(i, ",");
     }
 
     return result;
@@ -39,7 +31,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QString expression = "22222222222×(2323333)222+21232-23343|";
+    QString expression = "23482342389478923904823904823908237890732489237894×(2323333)222+21232-23343|";
     QString seg;
     QStringList expList;
 
