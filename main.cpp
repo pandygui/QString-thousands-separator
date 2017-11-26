@@ -53,17 +53,25 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QString expression = "23482342389478923904823904823908237890732489237894×(2323333)222+21232-23343|";
+    QString expression = "23482342389478923904823904823908237890732489237894×(2323333)222+21232-23343";
     QString seg;
     QStringList expList;
 
-    for (auto &ch : expression) {
+    for (int i = 0; i < expression.count(); ++i) {
+        const QChar ch = expression.at(i);
+
         if (ch.isDigit()) {
             seg.append(ch);
         } else {
             expList << seg;
             seg.clear();
-            expList << ch;
+            seg.append(ch);
+            expList << seg;
+            seg.clear();
+        }
+
+        if (i == expression.count() - 1) {
+            expList << seg;
         }
     }
 
@@ -76,7 +84,7 @@ int main(int argc, char *argv[])
         formatStr.append(item);
     }
 
-    qDebug() << formatStr.replace("|", "");
+    qDebug() << formatStr;
 
     return 0;
 }
