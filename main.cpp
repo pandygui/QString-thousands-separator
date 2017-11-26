@@ -27,9 +27,17 @@
 QString formatThousandsSeparators(const QString &str)
 {
     QString result = str;
+    int startPos = 0;
+    if (startPos >= 0) {
+        int endPos = result.indexOf(QRegularExpression("[.]"));
 
-    for (int i = result.count() - 3; i >= 1; i -= 3) {
-        result.insert(i, ",");
+        if (endPos < 0) {
+            endPos = result.length();
+        }
+
+        for (int i = endPos - 3; i >= startPos + 1; i -= 3) {
+            result.insert(i, ",");
+        }
     }
 
     return result;
@@ -40,7 +48,7 @@ bool stringIsDigit(const QString &str)
     bool isDigit = true;
 
     for (auto &ch : str) {
-        if (!ch.isDigit()) {
+        if (!ch.isDigit() && ch != '.') {
             isDigit = false;
             break;
         }
@@ -53,14 +61,14 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QString expression = "23482342389478923904823904823908237890732489237894×(2323333)222+21232-23343";
+    QString expression = "23482342389478.923904823904823908237890732489237894×(2323333)222+21232-23343";
     QString seg;
     QStringList expList;
 
     for (int i = 0; i < expression.count(); ++i) {
         const QChar ch = expression.at(i);
 
-        if (ch.isDigit()) {
+        if (ch.isDigit() || ch == '.') {
             seg.append(ch);
         } else {
             expList << seg;
@@ -74,6 +82,8 @@ int main(int argc, char *argv[])
             expList << seg;
         }
     }
+
+    qDebug() << expList;
 
     QString formatStr;
     for (auto item : expList) {
