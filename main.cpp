@@ -23,6 +23,7 @@
 #include <QCoreApplication>
 #include <QRegularExpression>
 #include <QDebug>
+#include <iostream>
 
 QString formatThousandsSeparators(const QString &str)
 {
@@ -57,11 +58,9 @@ bool stringIsDigit(const QString &str)
     return isDigit;
 }
 
-int main(int argc, char *argv[])
+QString reformat(const QString &text)
 {
-    QCoreApplication a(argc, argv);
-
-    QString expression = "23482342389478.923904823904823908237890732489237894×(2323333)222+21232-23343";
+    QString expression = text;
     QString seg;
     QStringList expList;
 
@@ -83,8 +82,6 @@ int main(int argc, char *argv[])
         }
     }
 
-    qDebug() << expList;
-
     QString formatStr;
     for (auto item : expList) {
         if (stringIsDigit(item)) {
@@ -94,7 +91,18 @@ int main(int argc, char *argv[])
         formatStr.append(item);
     }
 
-    qDebug() << formatStr;
+    return formatStr;
+}
+
+int main(int argc, char *argv[])
+{
+    QCoreApplication a(argc, argv);
+
+    while (1) {
+        std::string str;
+        std::cin >> str;
+        qDebug() << reformat(QString::fromStdString(str));
+    }
 
     return 0;
 }
